@@ -27,6 +27,8 @@ dub run -- --serve
 # 4) Tray UI (another terminal)
 cd ..\ui
 pnpm install
+# If electron.exe is missing (ignored build scripts), run:
+#   pnpm exec node node_modules/electron/install.js
 pnpm start
 ```
 
