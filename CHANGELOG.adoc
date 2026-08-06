@@ -1,0 +1,8 @@
+= Changelog
+:toc:
+
+== 0.1.0 — 2026-08-06
+
+* Initial scaffold: D `rulesd` daemon (compose, watch, IPC) + Electron tray UI.
+* Marker protocol for global vs machine agent-rules sections.
+* Docs: junctions temporary; tray DE notes.

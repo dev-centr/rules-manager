@@ -1,0 +1,9 @@
+{
+  "name": "rulesd",
+  "description": "Agent-rules compose and watch daemon for Dev-Centr rules-manager.",
+  "authors": ["Dev-Centr"],
+  "license": "MIT",
+  "targetType": "executable",
+  "targetName": "rulesd",
+  "mainSourceFile": "source/app.d"
+}

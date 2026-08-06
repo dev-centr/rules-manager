@@ -1,0 +1,49 @@
+= Install rules-manager
+:toc:
+
+== Overview
+
+Rules Manager keeps a composed agent-rules file in sync with your personal rules repo (usually `AMDphreak/agent-rules`).
+
+* **Daemon (`rulesd`)** — D binary; owns compose/watch/IPC
+* **Tray UI** — Electron; system tray / menu bar / StatusNotifier
+
+Junctions such as `…/AMDphreak/agent-rules` → `.forks/agent-rules` are a **temporary convenience**. Configure `rules_repo_path` in `$CODE_ROOT/rules-manager.config.json` instead.
+
+== Daemon
+
+----
+cd daemon
+dub build
+./rulesd --write-config --code-root <CODE_ROOT>
+./rulesd --config <CODE_ROOT>/rules-manager.config.json
+----
+
+IPC defaults to `http://127.0.0.1:17355` (`/health`, `/status`, `/compose`).
+
+=== Start at login
+
+* **Windows:** Task Scheduler at logon, or `HKCU\...\Run` pointing at `rulesd.exe`
+* **macOS:** LaunchAgent plist running `rulesd`
+* **Linux:** systemd user unit or XDG autostart `.desktop` for `rulesd`
+
+== Tray UI
+
+----
+cd ui
+pnpm install
+pnpm start
+----
+
+=== Desktop environments (Linux)
+
+Electron uses StatusNotifier / AppIndicator-style trays.
+
+* **KDE / XFCE / COSMIC** — usually show tray icons without extra setup
+* **GNOME** — may need an AppIndicator / tray extension if the shell hides legacy trays
+
+Smoke-test: open tray menu → Compose now → Open composed file.
+
+== Markers
+
+See the repository README for `rules:global` / `rules:machine` markers.
