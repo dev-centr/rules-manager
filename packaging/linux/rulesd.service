@@ -1,0 +1,11 @@
+[Unit]
+Description=Dev-Centr rulesd (agent-rules compose & watch)
+After=default.target
+
+[Service]
+Type=simple
+ExecStart=%h/.local/bin/rulesd --serve --config %h/code/rules-manager.config.json
+Restart=on-failure
+
+[Install]
+WantedBy=default.target

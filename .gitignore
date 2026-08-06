@@ -22,3 +22,6 @@ daemon/*.exe
 ui/node_modules/
 ui/dist/
 *.lsif
+
+daemon/*.pdb
+*.pdb

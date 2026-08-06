@@ -1,49 +1,107 @@
 = Install rules-manager
 :toc:
 
-== Overview
+Compose and watch personal agent-rules with the `rulesd` daemon and an Electron tray UI.
 
-Rules Manager keeps a composed agent-rules file in sync with your personal rules repo (usually `AMDphreak/agent-rules`).
+== Prerequisites
 
-* **Daemon (`rulesd`)** — D binary; owns compose/watch/IPC
-* **Tray UI** — Electron; system tray / menu bar / StatusNotifier
+* D toolchain (`dub` + DMD or LDC) to build `rulesd`
+* Node.js + `pnpm` for the tray UI
+* A clone of your agent-rules fork (for example `AMDphreak/agent-rules`)
 
-Junctions such as `…/AMDphreak/agent-rules` → `.forks/agent-rules` are a **temporary convenience**. Configure `rules_repo_path` in `$CODE_ROOT/rules-manager.config.json` instead.
+== Configure
 
-== Daemon
+Write a default config under `$CODE_ROOT`:
 
+[source,powershell]
 ----
 cd daemon
-dub build
-./rulesd --write-config --code-root <CODE_ROOT>
-./rulesd --config <CODE_ROOT>/rules-manager.config.json
+dub run -- --write-config --code-root C:\code
 ----
 
-IPC defaults to `http://127.0.0.1:17355` (`/health`, `/status`, `/compose`).
+Edit `$CODE_ROOT/rules-manager.config.json`:
 
-=== Start at login
+* `rules_repo_path` — absolute path to your agent-rules clone (prefer the real clone under `.forks/`; junctions are temporary)
+* `hostname_map` — map `COMPUTERNAME` / hostname to `laptop` or `desktop`
+* `composed_path` — usually `$CODE_ROOT/agent-rules.composed.md` (machine-local; never commit)
 
-* **Windows:** Task Scheduler at logon, or `HKCU\...\Run` pointing at `rulesd.exe`
-* **macOS:** LaunchAgent plist running `rulesd`
-* **Linux:** systemd user unit or XDG autostart `.desktop` for `rulesd`
+JSON is the v1 config format; SDL/JSON5 is preferred later per Software Product Essentials.
+
+== Run the daemon
+
+[source,powershell]
+----
+cd daemon
+dub run -- --compose          # one-shot
+dub run -- --serve            # watch + IPC on 127.0.0.1:17355 (default)
+----
+
+IPC:
+
+* `GET /health`
+* `GET /status`
+* `GET /debug`
+* `POST /compose`
 
 == Tray UI
 
+[source,powershell]
 ----
 cd ui
 pnpm install
 pnpm start
 ----
 
+The app lives in the system tray / menu bar. Open *Settings* or *Compose now* from the tray menu. The UI talks only to `rulesd` over localhost JSON; it does not write rules files itself.
+
 === Desktop environments (Linux)
 
-Electron uses StatusNotifier / AppIndicator-style trays.
+|===
+| DE | Expectation
 
-* **KDE / XFCE / COSMIC** — usually show tray icons without extra setup
-* **GNOME** — may need an AppIndicator / tray extension if the shell hides legacy trays
+| GNOME
+| StatusNotifier / AppIndicator. If the shell hides legacy trays, install a tray extension (for example AppIndicator support).
 
-Smoke-test: open tray menu → Compose now → Open composed file.
+| KDE Plasma
+| StatusNotifier in the system tray panel.
 
-== Markers
+| XFCE
+| Panel notification area applet.
 
-See the repository README for `rules:global` / `rules:machine` markers.
+| COSMIC
+| StatusNotifier / panel applet equivalent.
+|===
+
+Windows uses the notification area; macOS uses a menu bar extra (dock icon is hidden).
+
+== Start at login
+
+=== Windows
+
+* Daemon: Task Scheduler or a Run key pointing at `rulesd.exe --serve --config …`
+* Tray: Electron login item (`app.setLoginItemSettings`) or Startup folder shortcut to `pnpm start` / packaged exe
+
+Packaging helpers live under `packaging/windows/`.
+
+=== macOS
+
+* Daemon: LaunchAgent plist under `~/Library/LaunchAgents/` (see `packaging/macos/`)
+* Tray: Login Items for the packaged app
+
+=== Linux
+
+* Daemon: `systemd --user` unit (`packaging/linux/rulesd.service`) or XDG autostart for a wrapper script
+* Tray: XDG autostart desktop entry for the Electron app
+
+== Junctions (temporary)
+
+A directory junction such as `…/AMDphreak/agent-rules` → `.forks/agent-rules` is only a path convenience while migrating. Normal operation sets `rules_repo_path` in rules-manager config. Agents and docs should point at manager-managed paths; do not require junctions after rules-manager is installed.
+
+== Profiles
+
+In the agent-rules fork:
+
+* `profiles/laptop.md` / `profiles/desktop.md` — constants
+* `profiles/*.overlay.md` — machine-only bullets (composed into the machine marker section)
+
+Hostname → profile mapping lives in **rules-manager** config, not in the fork.

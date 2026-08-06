@@ -17,6 +17,7 @@ import rulesd.watch : gWatchState;
  * Minimal HTTP/1.1 JSON API on 127.0.0.1.
  * GET  /health
  * GET  /status
+ * GET  /debug
  * POST /compose  (also GET)
  */
 void serveIpc(RulesConfig cfg, string hostname, ushort port, bool delegate() shouldStop)
@@ -111,6 +112,23 @@ private void handleClient(Socket client, RulesConfig cfg, string hostname)
             gWatchState.profileId = result.profileId;
             gWatchState.status = "idle";
             gWatchState.lastError = null;
+        }
+        else if (path.startsWith("/debug"))
+        {
+            import rulesd.config : resolveProfileId;
+
+            body = JSONValue([
+                "version": JSONValue("0.1.0"),
+                "hostname": JSONValue(hostname),
+                "profile": JSONValue(resolveProfileId(cfg, hostname)),
+                "code_root": JSONValue(cfg.codeRoot),
+                "rules_repo_path": JSONValue(cfg.rulesRepoPath),
+                "composed_path": JSONValue(cfg.composedPath),
+                "ipc_port": JSONValue(cfg.ipcPort),
+                "status": JSONValue(gWatchState.status),
+                "dirty": JSONValue(gWatchState.dirty),
+                "error": JSONValue(gWatchState.lastError.length ? gWatchState.lastError : ""),
+            ]);
         }
         else
         {

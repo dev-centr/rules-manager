@@ -70,12 +70,16 @@ void pickRulesRepo(ref RulesConfig c, string codeRoot)
         c.rulesRepoPath = forks;
 }
 
+enum rulesdVersion = "0.1.0";
+
 int main(string[] args)
 {
     string configPath;
     bool doCompose;
     bool doServe;
     bool writeDefaultConfig;
+    bool showVersion;
+    bool debugDump;
     string codeRoot = defaultCodeRoot();
 
     auto helpInfo = getopt(args,
@@ -84,11 +88,19 @@ int main(string[] args)
         "serve", "Run watcher + IPC server", &doServe,
         "write-config", "Write a default config file and exit", &writeDefaultConfig,
         "code-root", "CODE_ROOT override", &codeRoot,
+        "version", "Print version and exit", &showVersion,
+        "debug-dump", "Print redacted runtime dump and exit", &debugDump,
     );
 
     if (helpInfo.helpWanted)
     {
         defaultGetoptPrinter("rulesd — agent-rules compose & watch daemon\n", helpInfo.options);
+        return 0;
+    }
+
+    if (showVersion)
+    {
+        writeln("rulesd ", rulesdVersion);
         return 0;
     }
 
@@ -115,7 +127,28 @@ int main(string[] args)
     }
 
     auto hostname = detectHostname();
-    writeln("rulesd 0.1.0 host=", hostname, " repo=", cfg.rulesRepoPath);
+
+    if (debugDump)
+    {
+        import rulesd.config : resolveProfileId;
+        import std.json;
+
+        auto dump = JSONValue([
+            "version": JSONValue(rulesdVersion),
+            "hostname": JSONValue(hostname),
+            "profile": JSONValue(resolveProfileId(cfg, hostname)),
+            "code_root": JSONValue(cfg.codeRoot),
+            "rules_repo_path": JSONValue(cfg.rulesRepoPath),
+            "composed_path": JSONValue(cfg.composedPath),
+            "ipc_port": JSONValue(cfg.ipcPort),
+            "debounce_ms": JSONValue(cfg.debounceMs),
+            "note": JSONValue("paths are local; no secrets expected in this dump"),
+        ]);
+        writeln(dump.toPrettyString);
+        return 0;
+    }
+
+    writeln("rulesd ", rulesdVersion, " host=", hostname, " repo=", cfg.rulesRepoPath);
 
     // Default with no flags: serve
     if (!doCompose && !doServe)

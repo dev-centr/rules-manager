@@ -35,7 +35,11 @@ RulesConfig defaultConfig(string codeRoot)
 RulesConfig loadConfig(string path)
 {
     enforce(exists(path), "config not found: " ~ path);
-    auto j = parseJSON(readText(path));
+    auto raw = readText(path);
+    // Strip UTF-8 BOM (PowerShell Set-Content -Encoding utf8)
+    if (raw.length >= 1 && raw[0] == '\uFEFF')
+        raw = raw[1 .. $];
+    auto j = parseJSON(raw);
     RulesConfig c;
     c.rulesRepoPath = j["rules_repo_path"].str;
     c.composedPath = j["composed_path"].str;
@@ -77,7 +81,13 @@ void saveConfig(string path, RulesConfig c)
 
 string resolveProfileId(RulesConfig c, string hostname)
 {
-    if (hostname in c.hostnameMap)
-        return c.hostnameMap[hostname];
+    import std.string : toLower;
+
+    auto want = hostname.toLower;
+    foreach (host, profile; c.hostnameMap)
+    {
+        if (host.toLower == want)
+            return profile;
+    }
     return c.activeProfile;
 }

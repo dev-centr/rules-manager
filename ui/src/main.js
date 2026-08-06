@@ -1,5 +1,6 @@
 const { app, BrowserWindow, Tray, Menu, nativeImage, shell, dialog } = require("electron");
 const path = require("path");
+const fs = require("fs");
 const http = require("http");
 
 const IPC_PORT = process.env.RULESD_PORT || 17355;
@@ -49,15 +50,13 @@ function ipcPost(pathname) {
 }
 
 function trayIcon() {
-  // 16x16 simple teal square PNG as data URL fallback via empty — Electron needs a file.
-  // Generate a minimal nativeImage from buffer.
-  const size = 16;
-  // 1x1 teal pixel expanded — use empty template on mac; colored on win/linux
-  const img = nativeImage.createEmpty();
-  if (process.platform === "darwin") {
-    return img; // templateImage set below if we had assets; empty still creates a tray slot on some builds
+  const asset = path.join(__dirname, "assets", "tray.png");
+  if (fs.existsSync(asset)) {
+    const img = nativeImage.createFromPath(asset);
+    if (process.platform === "darwin") img.setTemplateImage(true);
+    return img;
   }
-  // Create a small green bitmap
+  const size = 16;
   const buf = Buffer.alloc(size * size * 4);
   for (let i = 0; i < size * size; i++) {
     buf[i * 4] = 20;
@@ -70,15 +69,15 @@ function trayIcon() {
 
 async function refreshMenu() {
   let statusLabel = "rulesd: unreachable";
-  let composed = null;
   try {
     const st = await ipcGet("/status");
     statusLabel = `Status: ${st.status}${st.dirty ? " (dirty)" : ""} · ${st.profile || "?"}`;
-    composed = st.composed;
     if (st.error) statusLabel += ` · err: ${st.error}`;
   } catch {
     /* leave unreachable */
   }
+
+  const login = app.getLoginItemSettings ? app.getLoginItemSettings() : { openAtLogin: false };
 
   const template = [
     { label: "Rules Manager", enabled: false },
@@ -110,16 +109,46 @@ async function refreshMenu() {
       label: "Settings…",
       click: () => openSettings(),
     },
+    {
+      label: "Start tray at login",
+      type: "checkbox",
+      checked: !!login.openAtLogin,
+      click: (item) => {
+        if (app.setLoginItemSettings) {
+          app.setLoginItemSettings({ openAtLogin: item.checked, openAsHidden: true });
+        }
+      },
+    },
     { type: "separator" },
     {
       label: "About",
-      click: () => {
+      click: async () => {
+        let detail =
+          "Electron tray UI + rulesd (D) daemon.\nComposes global + machine agent-rules sections.\nTray: Windows, macOS, Linux (GNOME/KDE/XFCE/COSMIC).";
+        try {
+          const d = await ipcGet("/debug");
+          detail += `\n\nrulesd ${d.version} · host ${d.hostname} · profile ${d.profile}`;
+        } catch {
+          /* ignore */
+        }
         dialog.showMessageBox({
           title: "About Rules Manager",
           message: "Dev-Centr Rules Manager 0.1.0",
-          detail:
-            "Electron tray UI + rulesd (D) daemon.\nComposes global + machine agent-rules sections.\nTray targets: Windows, macOS, Linux (GNOME/KDE/XFCE/COSMIC).",
+          detail,
         });
+      },
+    },
+    {
+      label: "Copy debug dump",
+      click: async () => {
+        try {
+          const d = await ipcGet("/debug");
+          const { clipboard } = require("electron");
+          clipboard.writeText(JSON.stringify(d, null, 2));
+          dialog.showMessageBox({ message: "Debug dump copied to clipboard." });
+        } catch (e) {
+          dialog.showErrorBox("Debug dump failed", String(e.message || e));
+        }
       },
     },
     {
@@ -149,7 +178,6 @@ function openSettings() {
 }
 
 app.whenReady().then(() => {
-  // Keep running in tray; hide dock on mac when possible
   if (process.platform === "darwin" && app.dock) app.dock.hide();
 
   tray = new Tray(trayIcon());
@@ -162,11 +190,8 @@ app.whenReady().then(() => {
   }
   refreshMenu();
   setInterval(refreshMenu, 5000);
-
-  // Open settings on first run? Stay tray-only.
 });
 
 app.on("window-all-closed", (e) => {
-  // Stay alive for tray
   e.preventDefault();
 });

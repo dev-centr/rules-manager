@@ -4,22 +4,48 @@ on:
     tags: ["v*"]
   workflow_dispatch:
 jobs:
-  daemon-windows:
-    runs-on: windows-latest
+  daemon:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            artifact: rulesd-windows
+            binary: rulesd.exe
+          - os: ubuntu-latest
+            artifact: rulesd-linux
+            binary: rulesd
+          - os: macos-latest
+            artifact: rulesd-macos
+            binary: rulesd
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
       - name: Setup D
         uses: dlang-community/setup-dlang@v2
         with:
-          compiler: dmd-latest
+          compiler: ldc-latest
       - name: Build rulesd
         working-directory: daemon
         run: dub build -b release
       - uses: actions/upload-artifact@v4
         with:
-          name: rulesd-windows
-          path: daemon/rulesd.exe
-  ui-note:
+          name: ${{ matrix.artifact }}
+          path: daemon/${{ matrix.binary }}
+  ui:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Electron UI packaged via pnpm dist on release; extend matrix for mac/linux daemon later."
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+          cache-dependency-path: ui/pnpm-lock.yaml
+      - name: Install UI deps
+        working-directory: ui
+        run: pnpm install
+      - name: Note
+        run: echo "Full electron-builder matrix (Win/macOS/Linux AppImage) can run on tagged releases with OS-specific runners."

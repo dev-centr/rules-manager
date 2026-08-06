@@ -1,12 +1,14 @@
 {
-  "rules_repo_path": "C:/code/github.com/AMDphreak/agent-rules",
-  "composed_path": "C:/code/agent-rules.composed.md",
-  "code_root": "C:/code",
+  "rules_repo_path": "C:\\code\\github.com\\AMDphreak\\.forks\\agent-rules",
+  "composed_path": "C:\\code\\agent-rules.composed.md",
+  "code_root": "C:\\code",
   "active_profile": "laptop",
   "debounce_ms": 500,
   "ipc_port": 17355,
   "hostname_map": {
     "RJ-WIN-Laptop": "laptop",
-    "RJ-WIN-Desktop": "desktop"
+    "RJ-WIN-LAPTOP": "laptop",
+    "RJ-WIN-Desktop": "desktop",
+    "RJ-WIN-DESKTOP": "desktop"
   }
 }

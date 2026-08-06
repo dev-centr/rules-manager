@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Rules Manager
+Comment=Compose and watch agent-rules (tray)
+Exec=rules-manager
+Icon=rules-manager
+Terminal=false
+Categories=Utility;Development;
+X-GNOME-Autostart-enabled=true
+# StatusNotifier / AppIndicator path used by Electron Tray on GNOME (may need extension), KDE, XFCE, COSMIC.
