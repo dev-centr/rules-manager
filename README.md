@@ -1,17 +1,17 @@
 <a id="readme-top"></a>
-
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![License][license-shield]][license-url]
-
 <div align="center">
-  <h1>Rules Manager</h1>
-  <p>Compose and watch agent-rules: D rulesd daemon + Electron tray UI.</p>
-  <p>
+  <a href="https://github.com/dev-centr/rules-manager/graphs/contributors"><img src="https://img.shields.io/github/contributors/dev-centr/rules-manager.svg?style=for-the-badge" alt="Contributors"></a>
+  <a href="https://github.com/dev-centr/rules-manager/network/members"><img src="https://img.shields.io/github/forks/dev-centr/rules-manager.svg?style=for-the-badge" alt="Forks"></a>
+  <a href="https://github.com/dev-centr/rules-manager/stargazers"><img src="https://img.shields.io/github/stars/dev-centr/rules-manager.svg?style=for-the-badge" alt="Stargazers"></a>
+  <a href="https://github.com/dev-centr/rules-manager/issues"><img src="https://img.shields.io/github/issues/dev-centr/rules-manager.svg?style=for-the-badge" alt="Issues"></a>
+  <a href="https://github.com/dev-centr/rules-manager/blob/main/LICENSE"><img src="https://img.shields.io/github/license/dev-centr/rules-manager.svg?style=for-the-badge" alt="License"></a>
+
+  <h3 align="center">Rules Manager</h3>
+  <p align="center">
+    Compose and watch agent-rules: D rulesd daemon + Electron tray UI.
+    <br />
     <a href="https://github.com/dev-centr/rules-manager/issues">Report Bug</a>
-    ·
+    &middot;
     <a href="https://github.com/dev-centr/rules-manager/issues">Request Feature</a>
   </p>
 </div>
@@ -41,6 +41,8 @@ Compose and watch [agent-rules](https://github.com/dev-centr/agent-rules) (perso
 
 Junctions/hardlinks to agent-rules are a **temporary path hack**. Prefer configuring `rules_repo_path` in `$CODE_ROOT/rules-manager.config.json` (see `config/rules-manager.example.json`).
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 ## Installation
 
 ```powershell
@@ -64,6 +66,8 @@ pnpm start
 
 CLI: `--version`, `--debug-dump`, `--config`, `--code-root`.
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 ## Usage
 
 ### Markers
@@ -86,32 +90,24 @@ Edits inside markers patch back to `RULES.md` (global) or `profiles/<id>.overlay
 
 See `docs/app-essentials-checklist.md` and [Software Product Essentials](https://github.com/dev-centr/general-knowledge). Install docs: `docs/modules/ROOT/pages/how-to-install.adoc`.
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 ## Changelog
 
 See [CHANGELOG.adoc](CHANGELOG.adoc).
 
 ## License
 
-MIT
-
-## Contact
-
-DevCentr.org - support@devcentr.org
-
-Project Link: https://github.com/dev-centr/rules-manager
-
-Site: https://devcentr.org
+Distributed under the MIT License. See `LICENSE`.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<!-- MARKDOWN LINKS & IMAGES -->
-[contributors-shield]: https://img.shields.io/github/contributors/dev-centr/rules-manager.svg?style=for-the-badge
-[contributors-url]: https://github.com/dev-centr/rules-manager/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/dev-centr/rules-manager.svg?style=for-the-badge
-[forks-url]: https://github.com/dev-centr/rules-manager/network/members
-[stars-shield]: https://img.shields.io/github/stars/dev-centr/rules-manager.svg?style=for-the-badge
-[stars-url]: https://github.com/dev-centr/rules-manager/stargazers
-[issues-shield]: https://img.shields.io/github/issues/dev-centr/rules-manager.svg?style=for-the-badge
-[issues-url]: https://github.com/dev-centr/rules-manager/issues
-[license-shield]: https://img.shields.io/github/license/dev-centr/rules-manager.svg?style=for-the-badge
-[license-url]: https://github.com/dev-centr/rules-manager/blob/main/LICENSE
+## Contact
+
+DevCentr.org — support@devcentr.org
+
+Project Link: [https://github.com/dev-centr/rules-manager](https://github.com/dev-centr/rules-manager)
+
+Site: [https://devcentr.org](https://devcentr.org)
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
