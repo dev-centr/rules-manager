@@ -30,7 +30,7 @@
 
 ## About The Project
 
-Compose and watch [agent-rules](https://github.com/dev-centr/agent-rules) (personal home: [AMDphreak/agent-rules](https://github.com/AMDphreak/agent-rules)).
+Compose and watch [agent-rules](https://github.com/dev-centr/agent-rules).
 
 **Stack**
 
@@ -46,7 +46,7 @@ Junctions/hardlinks to agent-rules are a **temporary path hack**. Prefer configu
 ## Installation
 
 ```powershell
-# 1) Write default config (points at AMDphreak agent-rules if present)
+# 1) Write default config (points at local agent-rules under CODE_ROOT if present)
 cd daemon
 dub run -- --write-config --code-root C:\code
 

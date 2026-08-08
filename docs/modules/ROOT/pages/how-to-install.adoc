@@ -1,13 +1,13 @@
 = Install rules-manager
 :toc:
 
-Compose and watch personal agent-rules with the `rulesd` daemon and an Electron tray UI.
+Compose and watch agent-rules with the `rulesd` daemon and an Electron tray UI.
 
 == Prerequisites
 
 * D toolchain (`dub` + DMD or LDC) to build `rulesd`
 * Node.js + `pnpm` for the tray UI
-* A clone of your agent-rules fork (for example `AMDphreak/agent-rules`)
+* A clone of [agent-rules](https://github.com/dev-centr/agent-rules) (or your fork)
 
 == Configure
 
@@ -95,11 +95,11 @@ Packaging helpers live under `packaging/windows/`.
 
 == Junctions (temporary)
 
-A directory junction such as `…/AMDphreak/agent-rules` → `.forks/agent-rules` is only a path convenience while migrating. Normal operation sets `rules_repo_path` in rules-manager config. Agents and docs should point at manager-managed paths; do not require junctions after rules-manager is installed.
+A directory junction into a rules clone is only a path convenience while migrating. Normal operation sets `rules_repo_path` in rules-manager config. Agents and docs should point at manager-managed paths; do not require junctions after rules-manager is installed.
 
 == Profiles
 
-In the agent-rules fork:
+In the agent-rules repo:
 
 * `profiles/laptop.md` / `profiles/desktop.md` — constants
 * `profiles/*.overlay.md` — machine-only bullets (composed into the machine marker section)

@@ -1,6 +1,10 @@
 = Changelog
 :toc:
 
+== Unreleased
+
+* Docs/config: drop personal-fork paths and hostnames from public README, install guide, and defaults.
+
 == 0.1.0 — 2026-08-06
 
 * Initial scaffold: D `rulesd` daemon (compose, watch, IPC) + Electron tray UI.

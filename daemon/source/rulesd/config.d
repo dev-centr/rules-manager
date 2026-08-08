@@ -24,11 +24,8 @@ RulesConfig defaultConfig(string codeRoot)
     RulesConfig c;
     c.codeRoot = codeRoot;
     c.composedPath = buildPath(codeRoot, "agent-rules.composed.md");
-    c.rulesRepoPath = buildPath(codeRoot, "github.com", "AMDphreak", "agent-rules");
-    c.hostnameMap = [
-        "RJ-WIN-Laptop": "laptop",
-        "RJ-WIN-Desktop": "desktop",
-    ];
+    c.rulesRepoPath = buildPath(codeRoot, "github.com", "dev-centr", "agent-rules");
+    c.hostnameMap = (string[string]).init;
     return c;
 }
 

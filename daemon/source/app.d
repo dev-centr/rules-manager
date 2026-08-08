@@ -62,12 +62,9 @@ string defaultCodeRoot()
 
 void pickRulesRepo(ref RulesConfig c, string codeRoot)
 {
-    auto junction = buildPath(codeRoot, "github.com", "AMDphreak", "agent-rules");
-    auto forks = buildPath(codeRoot, "github.com", "AMDphreak", ".forks", "agent-rules");
-    if (exists(junction))
-        c.rulesRepoPath = junction;
-    else if (exists(forks))
-        c.rulesRepoPath = forks;
+    auto orgClone = buildPath(codeRoot, "github.com", "dev-centr", "agent-rules");
+    if (exists(orgClone))
+        c.rulesRepoPath = orgClone;
 }
 
 enum rulesdVersion = "0.1.0";
