@@ -1,0 +1,25 @@
+= Rules Manager
+:description: Compose and watch agent-rules with a D daemon and Electron tray UI.
+
+Compose and watch link:https://github.com/dev-centr/agent-rules[agent-rules]: marker-aware merge of global and machine sections, file watch, and a localhost tray UI.
+
+Repository::
+https://github.com/dev-centr/rules-manager
+
+Docs::
+https://docs.devcentr.org/rules-manager/
+
+== Stack
+
+* `daemon/` — **`rulesd`** (D): marker compose, file watch, localhost JSON IPC
+* `ui/` — Electron tray app (Windows / macOS / Linux GNOME·KDE·XFCE·COSMIC)
+* `packaging/` — start-at-login helpers (Run key / LaunchAgent / systemd --user)
+
+== Get started
+
+xref:how-to-install.adoc[Install] — write config, compose once, run the daemon and tray.
+
+== Related
+
+* xref:agent-rules::index.adoc[Agent Rules] — the rules content this manager composes
+* link:https://github.com/dev-centr/general-knowledge[Software Product Essentials] (general-knowledge)

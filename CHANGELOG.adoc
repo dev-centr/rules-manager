@@ -3,6 +3,7 @@
 
 == Unreleased
 
+* Docs: Antora component (`rules-manager`) with overview + install pages for the org docs hub.
 * Docs/config: drop personal-fork paths and hostnames from public README, install guide, and defaults.
 
 == 0.1.0 — 2026-08-06

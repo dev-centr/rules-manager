@@ -108,6 +108,8 @@ DevCentr.org — support@devcentr.org
 
 Project Link: [https://github.com/dev-centr/rules-manager](https://github.com/dev-centr/rules-manager)
 
+Docs: [https://docs.devcentr.org/rules-manager/](https://docs.devcentr.org/rules-manager/)
+
 Site: [https://devcentr.org](https://devcentr.org)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
