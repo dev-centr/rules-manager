@@ -1,6 +1,5 @@
-name: rules-manager
-title: Rules Manager
-version: master
-start_page: ROOT:index.adoc
+name: tools
+title: Tools
+version: ~
 nav:
-  - modules/ROOT/nav.adoc
+- modules/rules-manager/nav.adoc

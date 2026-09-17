@@ -7,7 +7,7 @@ Repository::
 https://github.com/dev-centr/rules-manager
 
 Docs::
-https://docs.devcentr.org/rules-manager/
+https://docs.devcentr.org/tools/rules-manager/
 
 == Stack
 
