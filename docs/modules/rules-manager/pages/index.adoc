@@ -21,5 +21,5 @@ xref:how-to-install.adoc[Install] — write config, compose once, run the daemon
 
 == Related
 
-* xref:agent-rules::index.adoc[Agent Rules] — the rules content this manager composes
+* xref:tools:agent-rules:index.adoc[Agent Rules] — the rules content this manager composes
 * link:https://github.com/dev-centr/general-knowledge[Software Product Essentials] (general-knowledge)
