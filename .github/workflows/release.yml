@@ -32,6 +32,7 @@ jobs:
         with:
           name: ${{ matrix.artifact }}
           path: daemon/${{ matrix.binary }}
+          retention-days: 1
   ui:
     runs-on: ubuntu-latest
     steps:
