@@ -5,6 +5,7 @@
 
 * Docs: Antora component (`rules-manager`) with overview + install pages for the org docs hub.
 * Docs/config: drop personal-fork paths and hostnames from public README, install guide, and defaults.
+* CI: tagged releases now publish `rulesd` builds (Linux/macOS `.tar.gz`, Windows `.zip`) to a GitHub Release; workflow artifacts still expire after 1 day.
 
 == 0.1.0 — 2026-08-06
 
